@@ -1,8 +1,10 @@
-from hashlib import sha256
+from makeshiftHashNew import hasher
 
 import json
 
 class Block:
+    
+    hasherInstance = hasher()
     def __init__(self, index, transactions, timestamp, previousHash, nonce = 0):
         self.index = index
         self.transactions = transactions
@@ -18,6 +20,6 @@ class Block:
     
     def computeHash(self):
         # This method will return the hash of whatever contents are in the block
-
         block_string = json.dumps(self.__dict__, sort_keys = True)
-        return sha256(block_string.encode()).hexdigest()
+        
+        return hasherInstance.
