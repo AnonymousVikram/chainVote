@@ -1,14 +1,2 @@
-varName,val
-fNameStart,2
-fNameLen,5
-lNameStart,3
-lNameLen,3
-dobM,1
-dobMModifier,37
-dobD,0
-dobDModifier,54
-dobOverallModifier,5549
-idStart,1
-idLen,2
-pnStart,0
-pnLen,8
+fNameStart,fNameLen,lNameStart,lNameLen,dobM,dobMModifier,dobD,dobDModifier,dobOverallModifier,idStart,idLen,pnStart,pnLen
+2,7,3,4,0,63,0,17,2857,1,3,3,3
