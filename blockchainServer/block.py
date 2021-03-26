@@ -5,21 +5,24 @@ import json
 class Block:
     
     hasherInstance = hasher()
-    def __init__(self, index, transactions, timestamp, previousHash, nonce = 0):
+    
+    def __init__(self, index, identity, vote, timestamp, previousHash, nonce = 0):
         self.index = index
-        self.transactions = transactions
+        self.identity = identity
+        self.vote = vote
         self.timestamp = timestamp
         self.previousHash = previousHash
         self.nonce = nonce
     
     @staticmethod
     def fromDict(blockDict):
-        block = Block(blockDict['index'], blockDict['transactions'], blockDict['timestamp'], blockDict['previousHash'], blockDict['nonce'])
-        block.hash = blockDict['hash']
+        tempBlock = Block(blockDict['index'], blockDict['identity'], blockDict['vote'], blockDict['timestamp'], blockDict['previousHash'], blockDict['nonce'])
+        tempBlock.hash = blockDict['hash']
         return block
     
     def computeHash(self):
         # This method will return the hash of whatever contents are in the block
-        block_string = json.dumps(self.__dict__, sort_keys = True)
+        block_string = self.hasherInstance.allInOneHash(self.identity)
+        block_string = "0" * self.nonce + block_string
         
-        return hasherInstance.
+        return block_string

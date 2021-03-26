@@ -1,12 +1,16 @@
-from hashlib import sha256
-
+from makeshiftHashNew import hasher
 from block import Block
 import time
+import numpy as np
 
 class Blockchain:
     # Setting up how difficult our proof of work algorithm is
-    difficulty = 1
-
+    difficulty = 2
+    approvedIdentities = np.genfromtxt('/Volumes/Vikram\'s Hard Drive/Programming/chainVote/voterInformation/approvedHash.csv', delimiter = ',', dtype = None)
+    print(approvedIdentities)
+    stringTest = "bc0a049f17cc70d95f5af18552cc4961898ca671bf78f2668294dc26033e3d9b"
+    print(approvedIdentities[1].decode("utf-8") == stringTest)
+    
     def __init__ (self):
         self.unconfirmedTransactions = []
         self.chain = []
@@ -19,7 +23,7 @@ class Blockchain:
                             'open_surveys': self.openSurveys,
                             'unconfirmed_transactions': self.unconfirmedTransactions}
         
-        self.create_genesis_block()
+        self.createGenesisBlock()
     
 
     @staticmethod
@@ -35,14 +39,14 @@ class Blockchain:
     def createGenesisBlock(self):
         # Method to make the first block of the block chain (genesis block)
 
-        genesisBlock = Block(0, [], time.time(), "0")
+        genesisBlock = Block(0, "master", [], time.time(), "0")
 
         # First initiation proof of work
         self.proofOfWork(genesisBlock)
 
-        genesisBlock.hash = genesisBlock.compute_hash()
+        genesisBlock.hash = genesisBlock.computeHash()
 
-        self.chain.append(genesis_block)
+        self.chain.append(genesisBlock)
     
     @property
     def lastBlock(self):
@@ -82,13 +86,18 @@ class Blockchain:
         self.unconfirmedTransaction.append(transaction)
     
     @classmethod
-    def isValidProof(cls, block, blockHash):
+    def isValidProof(self, block, blockHash):
         # Method to check if blockHash is a valid hash of block
+        checking = False
 
-        return (blockHash.startswith('0' * Blockchain.difficulty) and blockHash == block.computeHash())
+        for i in approvedIdentities:
+            if blockHash == approvedIdentities[1].decode("utf-8"):
+                checking = True
+                break;
+        return (blockHash.startswith('0' * Blockchain.difficulty) and checking)
     
     @classmethod
-    def check_chain_validity(cls, chain):
+    def check_chain_validity(self, chain):
         result = True
         previousHash = "0"
 
@@ -102,7 +111,8 @@ class Blockchain:
                 break
 
             block.hash, previousHash = blockHash, blockHash
-        
+
         return result
 
+blockchainTest = Blockchain()
 print("everything working")
